@@ -24,7 +24,7 @@ import matplotlib.ticker as ticker
 use_cuda = torch.cuda.is_available()
 
 # Loading data
-data = json.load(open('/home/twhartvigsen/work/data/joke-dataset/reddit_jokes.json'))
+data = json.load(open('reddit_jokes.json'))
 
 # Required functions
 SOS_token = 0
@@ -285,7 +285,7 @@ def train(input_variable, target_variable, encoder, decoder, encoder_optimizer, 
     encoder_optimizer.step()
     decoder_optimizer.step()
 
-    return loss.data[0] / target_length
+    return loss.item() / target_length
 
 def asMinutes(s):
     m = math.floor(s / 60)
@@ -400,5 +400,5 @@ if use_cuda:
     encoder1 = encoder1.cuda()
     attn_decoder1 = attn_decoder1.cuda()
 
-trainIters(encoder1, attn_decoder1, 100000, print_every=5000)
+trainIters(encoder1, attn_decoder1, n_iters=100000, print_every=5000)
 evaluateRandomly(encoder1, attn_decoder1)
